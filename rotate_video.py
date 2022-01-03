@@ -27,7 +27,8 @@ def rotate(PATH, CW=False):
     """
     EXT = PATH.split('.')[-1]
 #     print 'DEBUG: # of transpose = ', str(1+int(CW))
-    cmd = 'ffmpeg  -i "%s"  -vf "transpose=%s" -qscale:v 0 -map_metadata 0  -codec:a copy -y "%s-tmp.%s" && mv "%s-tmp.%s" "%s"' % (PATH, str(1 + int(CW)), PATH, EXT, PATH, EXT, PATH)
+    cmd = 'ffmpeg  -i "%s"  -vf "transpose=%s" -qscale:v 0 -map 0 -copy_unknown -map_metadata 0  -codec:a copy -y "%s-tmp.%s" && mv "%s-tmp.%s" "%s"' % (PATH, str(1 + int(CW)), PATH, EXT, PATH, EXT, PATH)
+    # https://coderunner.io/how-to-compress-gopro-movies-and-keep-metadata/
     print ('DEBUG: cmd = ', cmd)
     try:
         os.system(cmd)
