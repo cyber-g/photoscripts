@@ -16,6 +16,7 @@
 #
 
 import sys, os, glob
+import argparse
 
 def rotate(PATH, CW=False):
     """
@@ -34,23 +35,23 @@ def rotate(PATH, CW=False):
         print ('Command ', cmd, ' failed, error is: ', e)
 
 if __name__=="__main__":
-    args = sys.argv[1:]
 
-    if not len(args):
-        print("""
-        Usage: python rotate_video.py [-c] 'pattern'
+    parser = argparse.ArgumentParser(
+        prog="rotate_video.py",
+        description='A (simple) tool to rotate movies by 90 degrees.',
+        usage="python %(prog)s [-c] 'pattern'")
+    
+    parser.add_argument("-c", 
+        help="turn video counter-clockwise --- the default is clockwise",
+        action="store_true")
 
-        the -c option is to turn video counter-clockwise --- the default is
-        clockwise.
+    parser.add_argument('file', type=argparse.FileType('r'), nargs='+')
 
-        """)
-    else:
-        CW = args[0]
-        PATHS = args[1:]
-        if CW != '-c':
-            CW = ''
-            PATHS = args
-        for PATH in PATHS:
-            for filename in glob.glob(PATH):
-                print ('Processing file ', filename)
-                rotate(filename, CW=='-c')
+    args = parser.parse_args()
+
+    PATHS = args.file
+
+    for PATH in PATHS:
+        for filename in glob.glob(PATH.name):
+            print ('Processing file ', filename)
+            rotate(filename, args.c)
