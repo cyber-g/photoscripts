@@ -27,7 +27,7 @@ def rotate(PATH, CW=False):
     """
     EXT = PATH.split('.')[-1]
 #     print 'DEBUG: # of transpose = ', str(1+int(CW))
-    cmd = 'ffmpeg  -i "%s" -v 0  -vf "transpose=%s"  -qscale 0 -y "%s-tmp.%s" && mv "%s-tmp.%s" "%s"' % (PATH, str(1 + int(CW)), PATH, EXT, PATH, EXT, PATH)
+    cmd = 'ffmpeg  -i "%s" -v 0  -vf "transpose=%s" -qscale 0 -map_metadata 0  -codec:a copy -y "%s-tmp.%s" && mv "%s-tmp.%s" "%s"' % (PATH, str(1 + int(CW)), PATH, EXT, PATH, EXT, PATH)
     print ('DEBUG: cmd = ', cmd)
     try:
         os.system(cmd)
